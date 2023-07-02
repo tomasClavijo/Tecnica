@@ -25,20 +25,51 @@ import requests
 
 dictionary_url = "https://raw.githubusercontent.com/jonbcard/scrabble-bot/master/src/dictionary.txt"
 
+class Node:
+    def __init__(self):
+        self.children = {} #Almacena los nodos hijos
+        self.is_word = False #Indica si el nodo representa el final de una palabra
+
+class Trie:
+    def __init__(self):
+        self.root = Node() # Nodo Raiz
+
+    def insert(self, word): 
+        node = self.root # Parto del nodo raiz
+        for char in word:
+            if char not in node.children: # Verificamos si el caracter actual no esta presente en los hijos del nodo actual
+                node.children[char] = Node() # Si no esta presente en los hijos del nodo actual, se crea un nuevo nodo y se agrega como hijo del actual
+            node = node.children[char] # Despues de agregar el nuevo nodo, se actualiza el actual para pasar al siguiente nivel del arbol. 
+        node.is_word = True # Una vez  que se recorrieron todos los caracteres, se marca el nodo final como una palabra completa.
+
+    def search_prefix(self, prefix):
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return None
+            node = node.children[char]
+        return node
+
+def load_dictionary():
+    response = requests.get(dictionary_url)
+    dictionary = response.text.splitlines()
+    return dictionary
+
+Trie = Trie()
+dictionary = load_dictionary()
+for word in dictionary:
+    Trie.insert(word)
+
 def silly_autocomplete(word):
     if len(word) < 3:
         return None
-    
-    response = requests.get(dictionary_url)
-    dictionary = response.text.splitlines()
-    
-    word = word.lower()
-    for w in dictionary:
-        if w.lower().startswith(word) and w.lower() != word:
-            print(w)
-            return w
-    
-    return None
 
-# Ejemplo de llamada:
-#silly_autocomplete("nomatchforthisword")
+    prefix = word.upper()
+    node = Trie.search_prefix(prefix)
+    if node:
+        for char, child in node.children.items():
+            if child.is_word:
+                print(prefix + char)
+                return prefix + char
+
+    return None
