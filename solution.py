@@ -1,4 +1,4 @@
-#Ejercicio 1: O(N)
+#Ejercicio 1
 
 def add_between_zeroes(arr):
     first_zero_index = -1
@@ -15,9 +15,6 @@ def add_between_zeroes(arr):
     
     print(sum_elements)
     return(sum_elements)
-
-# Ejemplo de llamada:
-#add_between_zeroes([0, 4, 5, 6, 0, 7, 8])
 
 #Ejercicio 2
 
