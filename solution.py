@@ -27,20 +27,20 @@ dictionary_url = "https://raw.githubusercontent.com/jonbcard/scrabble-bot/master
 
 class Node:
     def __init__(self):
-        self.children = {} #Almacena los nodos hijos
-        self.is_word = False #Indica si el nodo representa el final de una palabra
+        self.children = {}
+        self.is_word = False 
 
 class Trie:
     def __init__(self):
-        self.root = Node() # Nodo Raiz
+        self.root = Node() 
 
     def insert(self, word): 
-        node = self.root # Parto del nodo raiz
+        node = self.root 
         for char in word:
-            if char not in node.children: # Verificamos si el caracter actual no esta presente en los hijos del nodo actual
-                node.children[char] = Node() # Si no esta presente en los hijos del nodo actual, se crea un nuevo nodo y se agrega como hijo del actual
-            node = node.children[char] # Despues de agregar el nuevo nodo, se actualiza el actual para pasar al siguiente nivel del arbol. 
-        node.is_word = True # Una vez  que se recorrieron todos los caracteres, se marca el nodo final como una palabra completa.
+            if char not in node.children: 
+                node.children[char] = Node() 
+            node = node.children[char] 
+        node.is_word = True 
 
     def search_prefix(self, prefix):
         node = self.root
