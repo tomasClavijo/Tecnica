@@ -7,11 +7,11 @@ function countWordLengths(wordArray){
         const word = wordArray[i];
 
         if(word){
-            const kay = word.length;
-            if(hashWordLengths[kay]){
-                hashWordLengths[kay]++;
+            const key = word.length;
+            if(hashWordLengths[key]){
+                hashWordLengths[key]++;
             } else{
-                hashWordLengths[kay] = 1;
+                hashWordLengths[key] = 1;
             }
         } else {
             return;
